@@ -1,13 +1,24 @@
+// src/app/page.tsx
 "use client";
 import { useEffect, useRef } from "react";
 import Script from "next/script";
 
-// Extend the Window interface so TypeScript recognizes these properties.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare global {
   interface Window {
     createjs: any;
     gsap: any;
   }
+}
+
+interface SpriteSheetData {
+  frames: [number, number, number, number][];
+  animations: {
+    dig: {
+      frames: number[];
+    };
+  };
+  images?: HTMLImageElement[];
 }
 
 export default function Home() {
@@ -21,7 +32,7 @@ export default function Home() {
     const stage = new window.createjs.Stage(canvasRef.current);
 
     // Define the sprite sheet data.
-    const spriteSheetData: any = {
+    const spriteSheetData: SpriteSheetData = {
       frames: [
         [0, 0, 0, 0],
         [0, 0, 264, 160],
@@ -60,8 +71,9 @@ export default function Home() {
       // Add the loaded image to the sprite sheet data.
       spriteSheetData.images = [spriteImage];
 
-      // Inline cast to any for the SpriteSheet and Sprite constructors.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const spriteSheet = new (window.createjs.SpriteSheet as any)(spriteSheetData);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const sprite = new (window.createjs.Sprite as any)(spriteSheet);
 
       // Start the sprite at the "dig" animation.
