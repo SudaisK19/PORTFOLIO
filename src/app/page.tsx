@@ -1,103 +1,112 @@
-import Image from "next/image";
+"use client";
+import { useEffect, useRef } from "react";
+import Script from "next/script";
+
+// Extend the Window interface so TypeScript recognizes these properties.
+declare global {
+  interface Window {
+    createjs: any;
+    gsap: any;
+  }
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  useEffect(() => {
+    if (!canvasRef.current) return;
+    if (!window.createjs || !window.gsap) return;
+
+    // Create the CreateJS stage using the canvas element.
+    const stage = new window.createjs.Stage(canvasRef.current);
+
+    // Define the sprite sheet data.
+    const spriteSheetData: any = {
+      frames: [
+        [0, 0, 0, 0],
+        [0, 0, 264, 160],
+        [264, 0, 264, 160],
+        [528, 0, 264, 160],
+        [792, 0, 264, 160],
+        [0, 160, 264, 160],
+        [264, 160, 264, 160],
+        [528, 160, 264, 160],
+        [792, 160, 264, 160],
+        [0, 320, 264, 160],
+        [264, 320, 264, 160],
+        [528, 320, 264, 160],
+        [792, 320, 264, 160],
+        [0, 480, 264, 160],
+      ],
+      animations: {
+        dig: {
+          frames: [
+            1, 2, 2, 2, 2, 1, 3, 4, 5, 6, 7, 8, 8, 9, 9,
+            10, 10, 11, 11, 12, 12, 13, 13, 13, 13, 13, 13,
+            13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 6, 6,
+            5, 5, 4, 4, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1, 1, 1,
+          ],
+        },
+      },
+    };
+
+    // Create and load the sprite image using document.createElement("img")
+    const spriteImage = document.createElement("img");
+    spriteImage.crossOrigin = "Anonymous";
+    spriteImage.src = "https://assets.codepen.io/128542/construction.png?v2";
+
+    spriteImage.onload = () => {
+      // Add the loaded image to the sprite sheet data.
+      spriteSheetData.images = [spriteImage];
+
+      // Inline cast to any for the SpriteSheet and Sprite constructors.
+      const spriteSheet = new (window.createjs.SpriteSheet as any)(spriteSheetData);
+      const sprite = new (window.createjs.Sprite as any)(spriteSheet);
+
+      // Start the sprite at the "dig" animation.
+      sprite.gotoAndStop("dig");
+      stage.addChild(sprite);
+      stage.update();
+
+      // Create a GSAP timeline to animate the sprite frames.
+      const tl = window.gsap.timeline({
+        paused: true,
+        repeat: -1,
+        defaults: { ease: "none" },
+      });
+      tl.to(sprite, {
+        currentAnimationFrame: window.gsap.utils.snap(
+          1,
+          spriteSheetData.animations.dig.frames.length
+        ),
+        duration: 2.5,
+      });
+      tl.eventCallback("onUpdate", () => {
+        stage.update();
+      });
+      tl.play();
+    };
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-8">
+      <h1 className="text-2xl font-bold mb-4">Under Construction</h1>
+      <canvas
+        ref={canvasRef}
+        width="264"
+        height="160"
+        style={{ imageRendering: "pixelated" }}
+      />
+      {/* Load external libraries */}
+      <Script
+        src="https://code.createjs.com/1.0.0/createjs.min.js"
+        strategy="beforeInteractive"
+      />
+      <Script
+        src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"
+        strategy="beforeInteractive"
+      />
     </div>
   );
 }
