@@ -1,16 +1,44 @@
-// src/app/page.tsx
 "use client";
 import { useEffect, useRef } from "react";
 import Script from "next/script";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// Define a minimal interface for GSAP timeline chaining.
+interface GsapTimeline {
+  to(
+    target: unknown,
+    vars: { currentAnimationFrame?: number; duration?: number; [key: string]: unknown }
+  ): GsapTimeline;
+  eventCallback(event: string, callback: () => void): GsapTimeline;
+  play(): GsapTimeline;
+}
+
+// Extend the global Window interface with minimal types for CreateJS and GSAP.
 declare global {
   interface Window {
-    createjs: any;
-    gsap: any;
+    createjs: {
+      Stage: new (canvas: HTMLCanvasElement) => {
+        update(): void;
+        addChild(child: unknown): void;
+      };
+      SpriteSheet: new (data: object) => unknown;
+      Sprite: new (spriteSheet: unknown) => {
+        gotoAndStop(animation: string): void;
+      };
+    };
+    gsap: {
+      timeline(options?: {
+        paused?: boolean;
+        repeat?: number;
+        defaults?: { ease?: string };
+      }): GsapTimeline;
+      utils: {
+        snap(increment: number, value: number): number;
+      };
+    };
   }
 }
 
+// Define an interface for our sprite sheet data.
 interface SpriteSheetData {
   frames: [number, number, number, number][];
   animations: {
@@ -62,7 +90,8 @@ export default function Home() {
       },
     };
 
-    // Create and load the sprite image using document.createElement("img")
+    // Create and load the sprite image using document.createElement("img").
+    // This avoids issues with `new Image()` and satisfies TypeScript.
     const spriteImage = document.createElement("img");
     spriteImage.crossOrigin = "Anonymous";
     spriteImage.src = "https://assets.codepen.io/128542/construction.png?v2";
@@ -71,10 +100,9 @@ export default function Home() {
       // Add the loaded image to the sprite sheet data.
       spriteSheetData.images = [spriteImage];
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const spriteSheet = new (window.createjs.SpriteSheet as any)(spriteSheetData);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const sprite = new (window.createjs.Sprite as any)(spriteSheet);
+      // Create the SpriteSheet and Sprite objects (casting is no longer needed).
+      const spriteSheet = new window.createjs.SpriteSheet(spriteSheetData);
+      const sprite = new window.createjs.Sprite(spriteSheet);
 
       // Start the sprite at the "dig" animation.
       sprite.gotoAndStop("dig");
