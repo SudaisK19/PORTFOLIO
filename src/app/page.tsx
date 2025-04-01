@@ -91,7 +91,6 @@ export default function Home() {
     };
 
     // Create and load the sprite image using document.createElement("img").
-    // This avoids issues with `new Image()` and satisfies TypeScript.
     const spriteImage = document.createElement("img");
     spriteImage.crossOrigin = "Anonymous";
     spriteImage.src = "https://assets.codepen.io/128542/construction.png?v2";
@@ -100,7 +99,7 @@ export default function Home() {
       // Add the loaded image to the sprite sheet data.
       spriteSheetData.images = [spriteImage];
 
-      // Create the SpriteSheet and Sprite objects (casting is no longer needed).
+      // Create the SpriteSheet and Sprite objects.
       const spriteSheet = new window.createjs.SpriteSheet(spriteSheetData);
       const sprite = new window.createjs.Sprite(spriteSheet);
 
@@ -131,6 +130,32 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
+      {/* Header with Contact Details */}
+      <header className="w-full flex justify-end items-center mb-4 space-x-4">
+        <a
+          href="https://github.com/SudaisK19"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 hover:underline"
+        >
+          GitHub
+        </a>
+        <a
+          href="https://www.linkedin.com/in/sudaiskatiya/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 hover:underline"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="mailto:sudais.katiya191@gmail.com"
+          className="text-blue-500 hover:underline"
+        >
+          Email
+        </a>
+      </header>
+
       <h1 className="text-2xl font-bold mb-4">Under Construction</h1>
       <canvas
         ref={canvasRef}
