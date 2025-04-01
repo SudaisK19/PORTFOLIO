@@ -131,29 +131,42 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
       {/* Header with Contact Details */}
-      <header className="w-full flex justify-end items-center mb-4 space-x-4">
-        <a
-          href="https://github.com/SudaisK19"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:underline"
-        >
-          GitHub
-        </a>
-        <a
-          href="https://www.linkedin.com/in/sudaiskatiya/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:underline"
-        >
-          LinkedIn
-        </a>
-        <a
-          href="mailto:sudais.katiya191@gmail.com"
-          className="text-blue-500 hover:underline"
-        >
-          Email
-        </a>
+      <header className="w-full text-center mb-4">
+        <h2 className="text-xl font-bold mb-2">Contact Details</h2>
+        <p>
+          GitHub:{" "}
+          <a
+            href="https://github.com/SudaisK19"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:underline"
+          >
+            https://github.com/SudaisK19
+          </a>
+        </p>
+        <p>
+          LinkedIn:{" "}
+          <a
+            href="https://www.linkedin.com/in/sudaiskatiya/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:underline"
+          >
+            https://www.linkedin.com/in/sudaiskatiya/
+          </a>
+        </p>
+        <p>
+          Email:{" "}
+          
+            sudais.katiya191@gmail.com
+          
+        </p>
+        <p>
+          Phone:{" "}
+          
+            +923122466677
+          
+        </p>
       </header>
 
       <h1 className="text-2xl font-bold mb-4">Under Construction</h1>
